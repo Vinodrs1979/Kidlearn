@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Learning Hub - Alphabets, Numbers, and Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo 2', cursive;
+            background-color: #fff8e1;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            background-image: linear-gradient(to bottom, #fff8e1, #ffe0b2);
+            min-height: 100vh;
+        }
+        h1 {
+            color: #ff5722;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2196f3;
+            font-size: 2em;
+        }
+        .section {
+            margin: 40px 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .alphabet-grid, .number-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .item {
+            background-color: #ffffff;
+            border: 2px solid #ffecb3;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .alphabet {
+            color: #e91e63;
+        }
+        .number {
+            color: #4caf50;
+        }
+        .example, .example-img {
+            font-size: 0.8em;
+            color: #555;
+            display: none;
+            margin-top: 10px;
+        }
+        .example-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        .active .example, .active .example-img {
+            display: block;
+        }
+        nav {
+            margin: 20px 0;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #ff5722;
+            font-weight: 600;
+            font-size: 1.2em;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #f44336;
+        }
+        #alphabets, #numbers, #quiz {
+            display: none;
+        }
+        #home {
+            display: block;
+        }
+        .quiz-question {
+            margin: 20px 0;
+            font-size: 1.5em;
+            color: #673ab7;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .quiz-option {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            padding: 15px;
+            margin: 10px;
+            width: 250px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            font-size: 1.2em;
+        }
+        .quiz-option:hover {
+            background-color: #bbdefb;
+        }
+        #quiz-feedback {
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #ffeb3b;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #fdd835;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .alphabet-grid, .number-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .item {
+                font-size: 1.5em;
+                padding: 15px;
+            }
+            nav a {
+                font-size: 1em;
+                margin: 0 10px;
+            }
+            .quiz-option {
+                width: 80%;
+            }
+        }
+        @media (max-width: 480px) {
+            .alphabet-grid, .number-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+            .example-img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Kids Learning Hub</h1>
+    <nav>
+        <a href="#" onclick="showSection('home')">Home</a>
+        <a href="#" onclick="showSection('alphabets')">Alphabets</a>
+        <a href="#" onclick="showSection('numbers')">Numbers</a>
+        <a href="#" onclick="showSection('quiz')">Quiz</a>
+    </nav>
+
+    <div id="home" class="section">
+        <p>Welcome to Kids Learning Hub! Learn your A to Z alphabets and numbers 1 to 20 in a fun way. Now with images, sounds, and a quiz! Click on the links above to start learning.</p>
+    </div>
+
+    <div id="alphabets" class="section">
+        <h2>Learn Alphabets A to Z</h2>
+        <p>Click on a letter to see an example word, image, and hear the sound!</p>
+        <div class="alphabet-grid">
+            <div class="item alphabet" onclick="toggleExample(this, 'A')">
+                A <span class="example">Apple</span>
+                <img src="https://loremflickr.com/100/100/apple" alt="Apple" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'B')">
+                B <span class="example">Ball</span>
+                <img src="https://loremflickr.com/100/100/ball" alt="Ball" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'C')">
+                C <span class="example">Cat</span>
+                <img src="https://loremflickr.com/100/100/cat" alt="Cat" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'D')">
+                D <span class="example">Dog</span>
+                <img src="https://loremflickr.com/100/100/dog" alt="Dog" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'E')">
+                E <span class="example">Elephant</span>
+                <img src="https://loremflickr.com/100/100/elephant" alt="Elephant" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'F')">
+                F <span class="example">Fish</span>
+                <img src="https://loremflickr.com/100/100/fish" alt="Fish" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'G')">
+                G <span class="example">Giraffe</span>
+                <img src="https://loremflickr.com/100/100/giraffe" alt="Giraffe" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'H')">
+                H <span class="example">Horse</span>
+                <img src="https://loremflickr.com/100/100/horse" alt="Horse" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'I')">
+                I <span class="example">Ice Cream</span>
+                <img src="https://loremflickr.com/100/100/ice%20cream" alt="Ice Cream" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'J')">
+                J <span class="example">Jug</span>
+                <img src="https://loremflickr.com/100/100/jug" alt="Jug" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'K')">
+                K <span class="example">Kite</span>
+                <img src="https://loremflickr.com/100/100/kite" alt="Kite" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'L')">
+                L <span class="example">Lion</span>
+                <img src="https://loremflickr.com/100/100/lion" alt="Lion" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'M')">
+                M <span class="example">Monkey</span>
+                <img src="https://loremflickr.com/100/100/monkey" alt="Monkey" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'N')">
+                N <span class="example">Nest</span>
+                <img src="https://loremflickr.com/100/100/nest" alt="Nest" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'O')">
+                O <span class="example">Orange</span>
+                <img src="https://loremflickr.com/100/100/orange" alt="Orange" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'P')">
+                P <span class="example">Penguin</span>
+                <img src="https://loremflickr.com/100/100/penguin" alt="Penguin" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'Q')">
+                Q <span class="example">Queen</span>
+                <img src="https://loremflickr.com/100/100/queen" alt="Queen" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'R')">
+                R <span class="example">Rabbit</span>
+                <img src="https://loremflickr.com/100/100/rabbit" alt="Rabbit" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'S')">
+                S <span class="example">Sun</span>
+                <img src="https://loremflickr.com/100/100/sun" alt="Sun" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'T')">
+                T <span class="example">Tiger</span>
+                <img src="https://loremflickr.com/100/100/tiger" alt="Tiger" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'U')">
+                U <span class="example">Umbrella</span>
+                <img src="https://loremflickr.com/100/100/umbrella" alt="Umbrella" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'V')">
+                V <span class="example">Violin</span>
+                <img src="https://loremflickr.com/100/100/violin" alt="Violin" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'W')">
+                W <span class="example">Whale</span>
+                <img src="https://loremflickr.com/100/100/whale" alt="Whale" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'X')">
+                X <span class="example">Xylophone</span>
+                <img src="https://loremflickr.com/100/100/xylophone" alt="Xylophone" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'Y')">
+                Y <span class="example">Yak</span>
+                <img src="https://loremflickr.com/100/100/yak" alt="Yak" class="example-img">
+            </div>
+            <div class="item alphabet" onclick="toggleExample(this, 'Z')">
+                Z <span class="example">Zebra</span>
+                <img src="https://loremflickr.com/100/100/zebra" alt="Zebra" class="example-img">
+            </div>
+        </div>
+    </div>
+
+    <div id="numbers" class="section">
+        <h2>Learn Numbers 1 to 20</h2>
+        <p>Click on a number to see how many stars, an image, and hear the sound!</p>
+        <div class="number-grid">
+            <div class="item number" onclick="toggleExample(this, '1')">
+                1 <span class="example">*</span>
+                <img src="https://loremflickr.com/100/100/one" alt="One" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '2')">
+                2 <span class="example">**</span>
+                <img src="https://loremflickr.com/100/100/two" alt="Two" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '3')">
+                3 <span class="example">***</span>
+                <img src="https://loremflickr.com/100/100/three" alt="Three" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '4')">
+                4 <span class="example">****</span>
+                <img src="https://loremflickr.com/100/100/four" alt="Four" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '5')">
+                5 <span class="example">*****</span>
+                <img src="https://loremflickr.com/100/100/five" alt="Five" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '6')">
+                6 <span class="example">******</span>
+                <img src="https://loremflickr.com/100/100/six" alt="Six" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '7')">
+                7 <span class="example">*******</span>
+                <img src="https://loremflickr.com/100/100/seven" alt="Seven" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '8')">
+                8 <span class="example">********</span>
+                <img src="https://loremflickr.com/100/100/eight" alt="Eight" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '9')">
+                9 <span class="example">*********</span>
+                <img src="https://loremflickr.com/100/100/nine" alt="Nine" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '10')">
+                10 <span class="example">**********</span>
+                <img src="https://loremflickr.com/100/100/ten" alt="Ten" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '11')">
+                11 <span class="example">***********</span>
+                <img src="https://loremflickr.com/100/100/eleven" alt="Eleven" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '12')">
+                12 <span class="example">************</span>
+                <img src="https://loremflickr.com/100/100/twelve" alt="Twelve" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '13')">
+                13 <span class="example">*************</span>
+                <img src="https://loremflickr.com/100/100/thirteen" alt="Thirteen" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '14')">
+                14 <span class="example">**************</span>
+                <img src="https://loremflickr.com/100/100/fourteen" alt="Fourteen" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '15')">
+                15 <span class="example">***************</span>
+                <img src="https://loremflickr.com/100/100/fifteen" alt="Fifteen" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '16')">
+                16 <span class="example">****************</span>
+                <img src="https://loremflickr.com/100/100/sixteen" alt="Sixteen" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '17')">
+                17 <span class="example">*****************</span>
+                <img src="https://loremflickr.com/100/100/seventeen" alt="Seventeen" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '18')">
+                18 <span class="example">******************</span>
+                <img src="https://loremflickr.com/100/100/eighteen" alt="Eighteen" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '19')">
+                19 <span class="example">*******************</span>
+                <img src="https://loremflickr.com/100/100/nineteen" alt="Nineteen" class="example-img">
+            </div>
+            <div class="item number" onclick="toggleExample(this, '20')">
+                20 <span class="example">********************</span>
+                <img src="https://loremflickr.com/100/100/twenty" alt="Twenty" class="example-img">
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz" class="section">
+        <h2>Fun Quiz!</h2>
+        <p>Test your knowledge with this simple quiz. Click next for a new question.</p>
+        <div id="quiz-container">
+            <div class="quiz-question" id="question"></div>
+            <div class="quiz-options" id="options"></div>
+            <div id="quiz-feedback"></div>
+            <button onclick="nextQuestion()">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('alphabets').style.display = 'none';
+            document.getElementById('numbers').style.display = 'none';
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
+            if (sectionId === 'quiz') {
+                nextQuestion();
+            }
+        }
+
+        function toggleExample(element, text) {
+            const wasActive = element.classList.contains('active');
+            element.classList.toggle('active');
+            if (!wasActive && 'speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Quiz data
+        const quizQuestions = [
+            {
+                question: "What letter comes after A?",
+                options: ["B", "C", "D"],
+                answer: "B"
+            },
+            {
+                question: "How many stars for number 5?",
+                options: ["***", "*****", "*******"],
+                answer: "*****"
+            },
+            {
+                question: "What starts with C?",
+                options: ["Dog", "Cat", "Ball"],
+                answer: "Cat"
+            },
+            {
+                question: "What number is ten?",
+                options: ["10", "20", "5"],
+                answer: "10"
+            },
+            // Add more questions as needed
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function nextQuestion() {
+            currentQuestionIndex = Math.floor(Math.random() * quizQuestions.length);
+            const question = quizQuestions[currentQuestionIndex];
+            document.getElementById('question').textContent = question.question;
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const optionElem = document.createElement('div');
+                optionElem.classList.add('quiz-option');
+                optionElem.textContent = option;
+                optionElem.onclick = () => checkAnswer(option, question.answer);
+                optionsContainer.appendChild(optionElem);
+            });
+            document.getElementById('quiz-feedback').textContent = '';
+        }
+
+        function checkAnswer(selected, correct) {
+            const feedback = document.getElementById('quiz-feedback');
+            if (selected === correct) {
+                feedback.textContent = 'Correct! Great job!';
+                feedback.style.color = 'green';
+            } else {
+                feedback.textContent = 'Oops! Try again.';
+                feedback.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>
