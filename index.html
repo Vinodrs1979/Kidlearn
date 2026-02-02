@@ -3,779 +3,583 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Learning Hub - Alphabets, Numbers, and Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Kids Wonder Hub - Learn & Play</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2C3E50;
+            --light: #F7F9FC;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
         body {
             font-family: 'Baloo 2', cursive;
-            background-color: #fff8e1;
-            color: #333;
-            text-align: center;
-            padding: 20px;
+            background-color: var(--light);
+            background-image: radial-gradient(#e0e7ff 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: var(--dark);
             margin: 0;
-            background-image: linear-gradient(to bottom, #fff8e1, #ffe0b2);
-            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
         }
-        h1 {
-            color: #ff5722;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        h2 {
-            color: #2196f3;
-            font-size: 2em;
-        }
-        .section {
-            margin: 40px 0;
-            animation: fadeIn 1s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .alphabet-grid, .number-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .item {
-            background-color: #ffffff;
-            border: 2px solid #ffecb3;
-            border-radius: 15px;
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), #ff8e8e);
             padding: 20px;
-            font-size: 2em;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            color: white;
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            letter-spacing: 1px;
         }
-        .alphabet {
-            color: #e91e63;
-        }
-        .number {
-            color: #4caf50;
-        }
-        .example, .example-img {
-            font-size: 0.8em;
-            color: #555;
-            display: none;
-            margin-top: 10px;
-        }
-        .example-img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-        }
-        .active .example, .active .example-img {
-            display: block;
-        }
+
+        /* Navigation */
         nav {
-            margin: 20px 0;
-            background-color: #ffffff;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #ff5722;
-            font-weight: 600;
-            font-size: 1.2em;
-            transition: color 0.3s;
+
+        nav button {
+            background: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-family: 'Baloo 2', cursive;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        nav a:hover {
-            color: #f44336;
+
+        nav button:hover, nav button.active {
+            transform: translateY(-3px);
+            background: var(--accent);
+            color: var(--dark);
+            box-shadow: 0 8px 15px rgba(255, 230, 109, 0.4);
         }
-        #alphabets, #numbers, #quiz {
+
+        /* Sections */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
             display: none;
+            animation: slideUp 0.6s ease-out;
         }
-        #home {
+
+        .container.active {
             display: block;
         }
-        .quiz-question {
-            margin: 20px 0;
-            font-size: 1.5em;
-            color: #673ab7;
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .quiz-options {
+
+        .section-title {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        /* Grids */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 25px;
+            padding: 10px;
+        }
+
+        /* Flip Cards */
+        .card-container {
+            perspective: 1000px;
+            height: 200px;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card-container.flipped .card {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            border: 4px solid white;
         }
-        .quiz-option {
-            background-color: #e3f2fd;
-            border: 1px solid #bbdefb;
-            padding: 15px;
-            margin: 10px;
-            width: 250px;
+
+        .card-front {
+            background: white;
+            color: var(--primary);
+            font-size: 4rem;
+        }
+
+        .card-back {
+            background: var(--secondary);
+            color: white;
+            transform: rotateY(180deg);
+            font-size: 1.5rem;
+        }
+
+        .card-emoji {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        /* Drawing Canvas */
+        .canvas-controls {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
             cursor: pointer;
-            border-radius: 10px;
-            transition: background-color 0.3s;
-            font-size: 1.2em;
+            display: inline-block;
+            margin: 0 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .quiz-option:hover {
-            background-color: #bbdefb;
+
+        canvas {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            cursor: crosshair;
+            display: block;
+            margin: 0 auto;
+            touch-action: none; /* Prevents scrolling while drawing on mobile */
         }
-        #quiz-feedback {
-            font-size: 1.2em;
-            margin-top: 10px;
+
+        /* Quiz Styles */
+        .quiz-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: var(--light);
+            border: 2px solid #e0e7ff;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Baloo 2';
+        }
+
+        .option-btn:hover {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .score-display {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 20px;
             font-weight: bold;
         }
-        #quiz-score {
-            font-size: 1.2em;
-            margin-top: 10px;
-            color: #ff5722;
+
+        /* Confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
         }
-        button {
-            background-color: #ffeb3b;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: #fdd835;
-        }
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .alphabet-grid, .number-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            }
-            h1 {
-                font-size: 2em;
-            }
-            h2 {
-                font-size: 1.5em;
-            }
-            .item {
-                font-size: 1.5em;
-                padding: 15px;
-            }
-            nav a {
-                font-size: 1em;
-                margin: 0 10px;
-            }
-            .quiz-option {
-                width: 80%;
-            }
-        }
-        @media (max-width: 480px) {
-            .alphabet-grid, .number-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            }
-            .example-img {
-                width: 80px;
-                height: 80px;
-            }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            .card-container { height: 160px; }
+            .card-front { font-size: 3rem; }
+            canvas { width: 100%; }
         }
     </style>
 </head>
 <body>
-    <h1>Kids Learning Hub</h1>
-    <nav>
-        <a href="#" onclick="showSection('home')">Home</a>
-        <a href="#" onclick="showSection('alphabets')">Alphabets</a>
-        <a href="#" onclick="showSection('numbers')">Numbers</a>
-        <a href="#" onclick="showSection('quiz')">Quiz</a>
-    </nav>
 
-    <div id="home" class="section">
-        <p>Welcome to Kids Learning Hub! Learn your A to Z alphabets and numbers 1 to 20 in a fun way. Now with images, sounds, and a quiz! Click on the links above to start learning.</p>
+    <header>
+        <h1>🎈 Kids Wonder Hub</h1>
+        <nav>
+            <button onclick="switchTab('alphabets', this)" class="active">🅰️ Alphabets</button>
+            <button onclick="switchTab('numbers', this)">🔢 Numbers</button>
+            <button onclick="switchTab('draw', this)">🎨 Draw</button>
+            <button onclick="switchTab('quiz', this)">❓ Quiz</button>
+        </nav>
+    </header>
+
+    <div id="alphabets" class="container active">
+        <h2 class="section-title">Tap a card to learn!</h2>
+        <div class="grid" id="alphabet-grid">
+            </div>
     </div>
 
-    <div id="alphabets" class="section">
-        <h2>Learn Alphabets A to Z</h2>
-        <p>Click on a letter to see an example word, image, and hear the sound!</p>
-        <div class="alphabet-grid">
-            <div class="item alphabet" onclick="toggleExample(this, 'A for Apple')">
-                A <span class="example">Apple</span>
-                <img src="https://loremflickr.com/100/100/apple" alt="Apple" class="example-img">
+    <div id="numbers" class="container">
+        <h2 class="section-title">Count with me!</h2>
+        <div class="grid" id="number-grid">
             </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'B for Ball')">
-                B <span class="example">Ball</span>
-                <img src="https://loremflickr.com/100/100/ball" alt="Ball" class="example-img">
+    </div>
+
+    <div id="draw" class="container">
+        <h2 class="section-title">Scribble Pad</h2>
+        <div class="canvas-controls">
+            <span class="color-btn" style="background: #000;" onclick="setColor('#000')"></span>
+            <span class="color-btn" style="background: #FF6B6B;" onclick="setColor('#FF6B6B')"></span>
+            <span class="color-btn" style="background: #4ECDC4;" onclick="setColor('#4ECDC4')"></span>
+            <span class="color-btn" style="background: #FFE66D;" onclick="setColor('#FFE66D')"></span>
+            <span class="color-btn" style="background: #6C5CE7;" onclick="setColor('#6C5CE7')"></span>
+            <button onclick="clearCanvas()" style="padding: 5px 15px; border-radius: 15px; border: 1px solid #ccc; background: white; cursor: pointer;">🧽 Clear</button>
+        </div>
+        <canvas id="drawingCanvas" width="600" height="400"></canvas>
+    </div>
+
+    <div id="quiz" class="container">
+        <h2 class="section-title">Are you a Genius?</h2>
+        <div class="quiz-box">
+            <div id="quiz-content">
+                <div class="question" id="question-text">Question goes here...</div>
+                <div class="options" id="options-container"></div>
+                <div id="feedback" style="margin-top: 15px; height: 30px;"></div>
             </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'C for Cat')">
-                C <span class="example">Cat</span>
-                <img src="https://loremflickr.com/100/100/cat" alt="Cat" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'D for Dog')">
-                D <span class="example">Dog</span>
-                <img src="https://loremflickr.com/100/100/dog" alt="Dog" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'E for Elephant')">
-                E <span class="example">Elephant</span>
-                <img src="https://loremflickr.com/100/100/elephant" alt="Elephant" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'F for Fish')">
-                F <span class="example">Fish</span>
-                <img src="https://loremflickr.com/100/100/fish" alt="Fish" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'G for Giraffe')">
-                G <span class="example">Giraffe</span>
-                <img src="https://loremflickr.com/100/100/giraffe" alt="Giraffe" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'H for Horse')">
-                H <span class="example">Horse</span>
-                <img src="https://loremflickr.com/100/100/horse" alt="Horse" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'I for Ice Cream')">
-                I <span class="example">Ice Cream</span>
-                <img src="https://loremflickr.com/100/100/ice%20cream" alt="Ice Cream" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'J for Jug')">
-                J <span class="example">Jug</span>
-                <img src="https://loremflickr.com/100/100/jug" alt="Jug" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'K for Kite')">
-                K <span class="example">Kite</span>
-                <img src="https://loremflickr.com/100/100/kite" alt="Kite" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'L for Lion')">
-                L <span class="example">Lion</span>
-                <img src="https://loremflickr.com/100/100/lion" alt="Lion" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'M for Monkey')">
-                M <span class="example">Monkey</span>
-                <img src="https://loremflickr.com/100/100/monkey" alt="Monkey" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'N for Nest')">
-                N <span class="example">Nest</span>
-                <img src="https://loremflickr.com/100/100/nest" alt="Nest" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'O for Orange')">
-                O <span class="example">Orange</span>
-                <img src="https://loremflickr.com/100/100/orange" alt="Orange" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'P for Penguin')">
-                P <span class="example">Penguin</span>
-                <img src="https://loremflickr.com/100/100/penguin" alt="Penguin" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'Q for Queen')">
-                Q <span class="example">Queen</span>
-                <img src="https://loremflickr.com/100/100/queen" alt="Queen" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'R for Rabbit')">
-                R <span class="example">Rabbit</span>
-                <img src="https://loremflickr.com/100/100/rabbit" alt="Rabbit" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'S for Sun')">
-                S <span class="example">Sun</span>
-                <img src="https://loremflickr.com/100/100/sun" alt="Sun" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'T for Tiger')">
-                T <span class="example">Tiger</span>
-                <img src="https://loremflickr.com/100/100/tiger" alt="Tiger" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'U for Umbrella')">
-                U <span class="example">Umbrella</span>
-                <img src="https://loremflickr.com/100/100/umbrella" alt="Umbrella" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'V for Violin')">
-                V <span class="example">Violin</span>
-                <img src="https://loremflickr.com/100/100/violin" alt="Violin" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'W for Whale')">
-                W <span class="example">Whale</span>
-                <img src="https://loremflickr.com/100/100/whale" alt="Whale" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'X for Xylophone')">
-                X <span class="example">Xylophone</span>
-                <img src="https://loremflickr.com/100/100/xylophone" alt="Xylophone" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'Y for Yak')">
-                Y <span class="example">Yak</span>
-                <img src="https://loremflickr.com/100/100/yak" alt="Yak" class="example-img">
-            </div>
-            <div class="item alphabet" onclick="toggleExample(this, 'Z for Zebra')">
-                Z <span class="example">Zebra</span>
-                <img src="https://loremflickr.com/100/100/zebra" alt="Zebra" class="example-img">
-            </div>
+            <div class="score-display">Score: <span id="score">0</span></div>
+            <button onclick="resetQuiz()" style="margin-top: 20px; display: none;" id="restart-btn" class="option-btn">Play Again 🔄</button>
         </div>
     </div>
 
-    <div id="numbers" class="section">
-        <h2>Learn Numbers 1 to 20</h2>
-        <p>Click on a number to see how many stars, an image, and hear the sound!</p>
-        <div class="number-grid">
-            <div class="item number" onclick="toggleExample(this, '1')">
-                1 <span class="example">*</span>
-                <img src="https://loremflickr.com/100/100/one" alt="One" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '2')">
-                2 <span class="example">**</span>
-                <img src="https://loremflickr.com/100/100/two" alt="Two" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '3')">
-                3 <span class="example">***</span>
-                <img src="https://loremflickr.com/100/100/three" alt="Three" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '4')">
-                4 <span class="example">****</span>
-                <img src="https://loremflickr.com/100/100/four" alt="Four" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '5')">
-                5 <span class="example">*****</span>
-                <img src="https://loremflickr.com/100/100/five" alt="Five" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '6')">
-                6 <span class="example">******</span>
-                <img src="https://loremflickr.com/100/100/six" alt="Six" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '7')">
-                7 <span class="example">*******</span>
-                <img src="https://loremflickr.com/100/100/seven" alt="Seven" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '8')">
-                8 <span class="example">********</span>
-                <img src="https://loremflickr.com/100/100/eight" alt="Eight" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '9')">
-                9 <span class="example">*********</span>
-                <img src="https://loremflickr.com/100/100/nine" alt="Nine" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '10')">
-                10 <span class="example">**********</span>
-                <img src="https://loremflickr.com/100/100/ten" alt="Ten" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '11')">
-                11 <span class="example">***********</span>
-                <img src="https://loremflickr.com/100/100/eleven" alt="Eleven" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '12')">
-                12 <span class="example">************</span>
-                <img src="https://loremflickr.com/100/100/twelve" alt="Twelve" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '13')">
-                13 <span class="example">*************</span>
-                <img src="https://loremflickr.com/100/100/thirteen" alt="Thirteen" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '14')">
-                14 <span class="example">**************</span>
-                <img src="https://loremflickr.com/100/100/fourteen" alt="Fourteen" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '15')">
-                15 <span class="example">***************</span>
-                <img src="https://loremflickr.com/100/100/fifteen" alt="Fifteen" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '16')">
-                16 <span class="example">****************</span>
-                <img src="https://loremflickr.com/100/100/sixteen" alt="Sixteen" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '17')">
-                17 <span class="example">*****************</span>
-                <img src="https://loremflickr.com/100/100/seventeen" alt="Seventeen" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '18')">
-                18 <span class="example">******************</span>
-                <img src="https://loremflickr.com/100/100/eighteen" alt="Eighteen" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '19')">
-                19 <span class="example">*******************</span>
-                <img src="https://loremflickr.com/100/100/nineteen" alt="Nineteen" class="example-img">
-            </div>
-            <div class="item number" onclick="toggleExample(this, '20')">
-                20 <span class="example">********************</span>
-                <img src="https://loremflickr.com/100/100/twenty" alt="Twenty" class="example-img">
-            </div>
-        </div>
-    </div>
-
-    <div id="quiz" class="section">
-        <h2>Fun Quiz!</h2>
-        <p>Test your knowledge with this quiz. Answer all correctly to be a Genius!</p>
-        <div id="quiz-container">
-            <div class="quiz-question" id="question"></div>
-            <div class="quiz-options" id="options"></div>
-            <div id="quiz-feedback"></div>
-            <div id="quiz-score">Score: 0</div>
-        </div>
-    </div>
+    <canvas id="confetti-canvas"></canvas>
 
     <script>
-        function showSection(sectionId) {
-            document.getElementById('home').style.display = 'none';
-            document.getElementById('alphabets').style.display = 'none';
-            document.getElementById('numbers').style.display = 'none';
-            document.getElementById('quiz').style.display = 'none';
-            document.getElementById(sectionId).style.display = 'block';
-            if (sectionId === 'quiz') {
-                resetQuiz();
-                nextQuestion();
-            }
-        }
-
-        function toggleExample(element, text) {
-            const wasActive = element.classList.contains('active');
-            element.classList.toggle('active');
-            if (!wasActive && 'speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                speechSynthesis.speak(utterance);
-            }
-        }
-
-        // Quiz data
-        const quizQuestions = [
-            {
-                question: "What letter comes after A?",
-                options: ["B", "C", "D"],
-                answer: "B"
-            },
-            {
-                question: "How many stars for number 5?",
-                options: ["***", "*****", "*******"],
-                answer: "*****"
-            },
-            {
-                question: "What starts with C?",
-                options: ["Dog", "Cat", "Ball"],
-                answer: "Cat"
-            },
-            {
-                question: "What number is ten?",
-                options: ["10", "20", "5"],
-                answer: "10"
-            },
-            {
-                question: "What letter comes after B?",
-                options: ["A", "C", "D"],
-                answer: "C"
-            },
-            {
-                question: "What starts with D?",
-                options: ["Cat", "Dog", "Ball"],
-                answer: "Dog"
-            },
-            {
-                question: "How many stars for number 3?",
-                options: ["***", "*****", "*"],
-                answer: "***"
-            },
-            {
-                question: "What letter comes after Z?",
-                options: ["A", "Y", "None"],
-                answer: "None"
-            },
-            {
-                question: "What starts with E?",
-                options: ["Elephant", "Fish", "Giraffe"],
-                answer: "Elephant"
-            },
-            {
-                question: "What number comes after 19?",
-                options: ["20", "18", "21"],
-                answer: "20"
-            },
-            {
-                question: "How many stars for number 10?",
-                options: ["**********", "*****", "********************"],
-                answer: "**********"
-            },
-            {
-                question: "What letter comes before C?",
-                options: ["B", "D", "A"],
-                answer: "B"
-            },
-            {
-                question: "What starts with F?",
-                options: ["Fish", "Horse", "Ice Cream"],
-                answer: "Fish"
-            },
-            {
-                question: "What number is five?",
-                options: ["5", "10", "15"],
-                answer: "5"
-            },
-            {
-                question: "What letter comes after M?",
-                options: ["N", "O", "L"],
-                answer: "N"
-            },
-            {
-                question: "What starts with G?",
-                options: ["Giraffe", "Horse", "Jug"],
-                answer: "Giraffe"
-            },
-            {
-                question: "How many stars for number 1?",
-                options: ["*", "**", "***"],
-                answer: "*"
-            },
-            {
-                question: "What letter comes before A?",
-                options: ["None", "Z", "B"],
-                answer: "None"
-            },
-            {
-                question: "What starts with H?",
-                options: ["Horse", "Ice Cream", "Kite"],
-                answer: "Horse"
-            },
-            {
-                question: "What number comes before 20?",
-                options: ["19", "18", "21"],
-                answer: "19"
-            },
-            {
-                question: "How many stars for number 20?",
-                options: ["********************", "**********", "*****"],
-                answer: "********************"
-            },
-            {
-                question: "What letter comes after D?",
-                options: ["E", "F", "C"],
-                answer: "E"
-            },
-            {
-                question: "What starts with I?",
-                options: ["Ice Cream", "Jug", "Kite"],
-                answer: "Ice Cream"
-            },
-            {
-                question: "What number is fifteen?",
-                options: ["15", "10", "20"],
-                answer: "15"
-            },
-            {
-                question: "What letter comes before Z?",
-                options: ["Y", "X", "A"],
-                answer: "Y"
-            },
-            {
-                question: "What starts with J?",
-                options: ["Jug", "Kite", "Lion"],
-                answer: "Jug"
-            },
-            {
-                question: "How many stars for number 2?",
-                options: ["**", "*", "***"],
-                answer: "**"
-            },
-            {
-                question: "What letter comes after E?",
-                options: ["F", "G", "D"],
-                answer: "F"
-            },
-            {
-                question: "What starts with K?",
-                options: ["Kite", "Lion", "Monkey"],
-                answer: "Kite"
-            },
-            {
-                question: "What number comes after 10?",
-                options: ["11", "9", "12"],
-                answer: "11"
-            },
-            {
-                question: "How many stars for number 4?",
-                options: ["****", "*****", "***"],
-                answer: "****"
-            },
-            {
-                question: "What letter comes before B?",
-                options: ["A", "C", "None"],
-                answer: "A"
-            },
-            {
-                question: "What starts with L?",
-                options: ["Lion", "Monkey", "Nest"],
-                answer: "Lion"
-            },
-            {
-                question: "What number is one?",
-                options: ["1", "2", "3"],
-                answer: "1"
-            },
-            {
-                question: "What letter comes after F?",
-                options: ["G", "H", "E"],
-                answer: "G"
-            },
-            {
-                question: "What starts with M?",
-                options: ["Monkey", "Nest", "Orange"],
-                answer: "Monkey"
-            },
-            {
-                question: "How many stars for number 6?",
-                options: ["******", "*****", "*******"],
-                answer: "******"
-            },
-            {
-                question: "What letter comes before D?",
-                options: ["C", "B", "E"],
-                answer: "C"
-            },
-            {
-                question: "What starts with N?",
-                options: ["Nest", "Orange", "Penguin"],
-                answer: "Nest"
-            },
-            {
-                question: "What number comes before 5?",
-                options: ["4", "6", "3"],
-                answer: "4"
-            },
-            {
-                question: "How many stars for number 7?",
-                options: ["*******", "******", "********"],
-                answer: "*******"
-            },
-            {
-                question: "What letter comes after G?",
-                options: ["H", "I", "F"],
-                answer: "H"
-            },
-            {
-                question: "What starts with O?",
-                options: ["Orange", "Penguin", "Queen"],
-                answer: "Orange"
-            },
-            {
-                question: "What number is twenty?",
-                options: ["20", "10", "15"],
-                answer: "20"
-            },
-            {
-                question: "What letter comes before E?",
-                options: ["D", "F", "C"],
-                answer: "D"
-            },
-            {
-                question: "What starts with P?",
-                options: ["Penguin", "Queen", "Rabbit"],
-                answer: "Penguin"
-            },
-            {
-                question: "How many stars for number 8?",
-                options: ["********", "*******", "*********"],
-                answer: "********"
-            },
-            {
-                question: "What letter comes after H?",
-                options: ["I", "J", "G"],
-                answer: "I"
-            },
-            {
-                question: "What starts with Q?",
-                options: ["Queen", "Rabbit", "Sun"],
-                answer: "Queen"
-            },
-            {
-                question: "What number comes after 15?",
-                options: ["16", "14", "17"],
-                answer: "16"
-            },
-            {
-                question: "How many stars for number 9?",
-                options: ["*********", "********", "**********"],
-                answer: "*********"
-            },
-            {
-                question: "What letter comes before F?",
-                options: ["E", "G", "D"],
-                answer: "E"
-            },
-            {
-                question: "What starts with R?",
-                options: ["Rabbit", "Sun", "Tiger"],
-                answer: "Rabbit"
-            },
-            {
-                question: "What number is two?",
-                options: ["2", "1", "3"],
-                answer: "2"
-            },
-            {
-                question: "What letter comes after I?",
-                options: ["J", "K", "H"],
-                answer: "J"
-            }
+        // --- DATA ---
+        const alphabets = [
+            { l: 'A', w: 'Apple', e: '🍎' }, { l: 'B', w: 'Ball', e: '⚽' }, { l: 'C', w: 'Cat', e: '🐱' },
+            { l: 'D', w: 'Dog', e: '🐶' }, { l: 'E', w: 'Elephant', e: '🐘' }, { l: 'F', w: 'Fish', e: '🐠' },
+            { l: 'G', w: 'Giraffe', e: '🦒' }, { l: 'H', w: 'House', e: '🏠' }, { l: 'I', w: 'Ice Cream', e: '🍦' },
+            { l: 'J', w: 'Juice', e: '🧃' }, { l: 'K', w: 'Kite', e: '🪁' }, { l: 'L', w: 'Lion', e: '🦁' },
+            { l: 'M', w: 'Monkey', e: '🐵' }, { l: 'N', w: 'Nest', e: '🪺' }, { l: 'O', w: 'Orange', e: '🍊' },
+            { l: 'P', w: 'Penguin', e: '🐧' }, { l: 'Q', w: 'Queen', e: '👸' }, { l: 'R', w: 'Robot', e: '🤖' },
+            { l: 'S', w: 'Sun', e: '☀️' }, { l: 'T', w: 'Tiger', e: '🐯' }, { l: 'U', w: 'Umbrella', e: '☂️' },
+            { l: 'V', w: 'Van', e: '🚐' }, { l: 'W', w: 'Whale', e: '🐳' }, { l: 'X', w: 'Xylophone', e: '🎹' },
+            { l: 'Y', w: 'Yo-Yo', e: '🪀' }, { l: 'Z', w: 'Zebra', e: '🦓' }
         ];
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        const totalQuestions = quizQuestions.length;
+        const numbers = Array.from({length: 20}, (_, i) => ({ n: i + 1 }));
 
-        function resetQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
-            updateScore();
+        const quizData = [
+            { q: "What comes after A?", o: ["B", "C", "D"], a: "B" },
+            { q: "Which animal says 'Meow'?", o: ["Dog", "Cat", "Cow"], a: "Cat" },
+            { q: "Count the stars: ⭐⭐⭐", o: ["2", "3", "5"], a: "3" },
+            { q: "What color is a Sun?", o: ["Blue", "Yellow", "Green"], a: "Yellow" },
+            { q: "Which number comes after 9?", o: ["8", "10", "11"], a: "10" }
+        ];
+
+        // --- INIT ---
+        function init() {
+            // Generate Alphabets
+            const alphaGrid = document.getElementById('alphabet-grid');
+            alphabets.forEach(item => {
+                alphaGrid.innerHTML += `
+                    <div class="card-container" onclick="flipCard(this, '${item.l} for ${item.w}')">
+                        <div class="card">
+                            <div class="card-front">${item.l}</div>
+                            <div class="card-back">
+                                <div class="card-emoji">${item.e}</div>
+                                <div>${item.w}</div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            // Generate Numbers
+            const numGrid = document.getElementById('number-grid');
+            numbers.forEach(item => {
+                let stars = '⭐'.repeat(item.n > 5 ? 1 : item.n); 
+                let text = item.n > 5 ? `${item.n} Stars` : stars;
+                numGrid.innerHTML += `
+                    <div class="card-container" onclick="flipCard(this, '${item.n}')">
+                        <div class="card">
+                            <div class="card-front" style="color: var(--secondary)">${item.n}</div>
+                            <div class="card-back" style="background: var(--primary)">
+                                <div style="font-size: 1rem">${text}</div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            loadQuestion();
+            initCanvas();
         }
 
-        function nextQuestion() {
-            if (currentQuestionIndex >= totalQuestions) {
-                document.getElementById('question').textContent = 'Quiz Completed!';
-                document.getElementById('options').innerHTML = '';
-                document.getElementById('quiz-feedback').textContent = '';
+        // --- LOGIC ---
+        function switchTab(id, btn) {
+            document.querySelectorAll('.container').forEach(d => d.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function flipCard(el, text) {
+            // Close other cards
+            document.querySelectorAll('.card-container.flipped').forEach(c => {
+                if(c !== el) c.classList.remove('flipped');
+            });
+            
+            el.classList.toggle('flipped');
+            
+            if (el.classList.contains('flipped')) {
+                speak(text);
+            }
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                utterance.pitch = 1.2;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // --- DRAWING CANVAS ---
+        let canvas, ctx, painting = false;
+        let drawColor = "#000";
+
+        function initCanvas() {
+            canvas = document.getElementById("drawingCanvas");
+            ctx = canvas.getContext("2d");
+            
+            // Handle resizing
+            function resizeCanvas() {
+                const parent = canvas.parentElement;
+                canvas.width = parent.clientWidth - 40; // padding
+                canvas.height = 300;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // Mouse Events
+            canvas.addEventListener("mousedown", startPosition);
+            canvas.addEventListener("mouseup", finishedPosition);
+            canvas.addEventListener("mousemove", draw);
+            
+            // Touch Events
+            canvas.addEventListener("touchstart", (e) => {
+                e.preventDefault();
+                startPosition(e.touches[0]);
+            });
+            canvas.addEventListener("touchend", finishedPosition);
+            canvas.addEventListener("touchmove", (e) => {
+                e.preventDefault();
+                draw(e.touches[0]);
+            });
+        }
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function finishedPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!painting) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.pageX) - rect.left;
+            const y = (e.clientY || e.pageY) - rect.top;
+
+            ctx.lineWidth = 5;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = drawColor;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function setColor(c) { drawColor = c; }
+        function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+        // --- QUIZ LOGIC ---
+        let currentQ = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            if (currentQ >= quizData.length) {
+                endQuiz();
                 return;
             }
-            const question = quizQuestions[currentQuestionIndex];
-            document.getElementById('question').textContent = question.question;
-            const optionsContainer = document.getElementById('options');
-            optionsContainer.innerHTML = '';
-            question.options.forEach(option => {
-                const optionElem = document.createElement('div');
-                optionElem.classList.add('quiz-option');
-                optionElem.textContent = option;
-                optionElem.onclick = () => checkAnswer(option, question.answer);
-                optionsContainer.appendChild(optionElem);
+            const q = quizData[currentQ];
+            document.getElementById('question-text').innerText = q.q;
+            const opts = document.getElementById('options-container');
+            opts.innerHTML = '';
+            
+            q.o.forEach(opt => {
+                opts.innerHTML += `<button class="option-btn" onclick="checkAnswer('${opt}')">${opt}</button>`;
             });
-            document.getElementById('quiz-feedback').textContent = '';
         }
 
-        function checkAnswer(selected, correct) {
-            const feedback = document.getElementById('quiz-feedback');
-            if (selected === correct) {
-                feedback.textContent = 'Correct! Great job!';
-                feedback.style.color = 'green';
-                score += 1;
-                updateScore();
-                if (score === totalQuestions) {
-                    celebrateGenius();
-                } else {
-                    setTimeout(() => {
-                        currentQuestionIndex++;
-                        nextQuestion();
-                    }, 1000);
-                }
+        function checkAnswer(ans) {
+            const correct = quizData[currentQ].a;
+            const fb = document.getElementById('feedback');
+            
+            if (ans === correct) {
+                score++;
+                fb.innerHTML = "<span style='color:green'>Correct! 🎉</span>";
+                speak("Correct!");
             } else {
-                feedback.textContent = 'Oops! Try again.';
-                feedback.style.color = 'red';
-                score = 0;
-                updateScore();
-                setTimeout(() => {
-                    currentQuestionIndex++;
-                    nextQuestion();
-                }, 1000);
+                fb.innerHTML = "<span style='color:red'>Oops! Try again.</span>";
+                speak("Oops");
+            }
+            
+            document.getElementById('score').innerText = score;
+            currentQ++;
+            setTimeout(() => {
+                fb.innerHTML = "";
+                loadQuestion();
+            }, 1000);
+        }
+
+        function endQuiz() {
+            document.getElementById('quiz-content').innerHTML = `
+                <h2>Quiz Complete!</h2>
+                <p>You scored ${score} out of ${quizData.length}</p>
+                ${score === quizData.length ? "<h3>🌟 You are a GENIUS! 🌟</h3>" : ""}
+            `;
+            document.getElementById('restart-btn').style.display = 'inline-block';
+            
+            if (score === quizData.length) {
+                speak("You are a Genius!");
+                startConfetti();
             }
         }
 
-        function updateScore() {
-            document.getElementById('quiz-score').textContent = `Score: ${score}`;
+        function resetQuiz() {
+            currentQ = 0;
+            score = 0;
+            document.getElementById('score').innerText = "0";
+            document.getElementById('restart-btn').style.display = 'none';
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="question" id="question-text"></div>
+                <div class="options" id="options-container"></div>
+                <div id="feedback" style="margin-top: 15px; height: 30px;"></div>
+            `;
+            loadQuestion();
+            stopConfetti();
         }
 
-        function celebrateGenius() {
-            alert('You are A Genius!');
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance('You are A Genius');
-                speechSynthesis.speak(utterance);
+        // --- CONFETTI EFFECT (Simple JS Implementation) ---
+        let confettiInterval;
+        function startConfetti() {
+            const c = document.getElementById('confetti-canvas');
+            const ctx = c.getContext('2d');
+            c.width = window.innerWidth;
+            c.height = window.innerHeight;
+            
+            const pieces = [];
+            for(let i=0; i<100; i++) {
+                pieces.push({
+                    x: Math.random() * c.width,
+                    y: Math.random() * c.height - c.height,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    size: Math.random() * 10 + 5,
+                    speed: Math.random() * 5 + 2
+                });
             }
-            resetQuiz();
-            nextQuestion();
+
+            confettiInterval = setInterval(() => {
+                ctx.clearRect(0, 0, c.width, c.height);
+                pieces.forEach(p => {
+                    p.y += p.speed;
+                    if(p.y > c.height) p.y = -20;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                });
+            }, 20);
+
+            setTimeout(stopConfetti, 5000); // Stop after 5 seconds
         }
+
+        function stopConfetti() {
+            clearInterval(confettiInterval);
+            const c = document.getElementById('confetti-canvas');
+            const ctx = c.getContext('2d');
+            ctx.clearRect(0, 0, c.width, c.height);
+        }
+
+        // Start
+        init();
+
     </script>
 </body>
 </html>
