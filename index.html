@@ -5,67 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure File Download</title>
     <style>
+        /* General Page Styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f2f5;
             margin: 0;
+            overflow: hidden;
         }
+
         .download-container {
             text-align: center;
             background: white;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             max-width: 400px;
-            width: 100%;
-            box-sizing: border-box; /* Prevents input overflow */
+            width: 90%;
+            z-index: 1;
         }
-        h2 {
-            color: #333;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        p {
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            margin-bottom: 20px;
-            width: 100%;
-        }
+
+        h2 { color: #333; margin-bottom: 5px; }
+        p { color: #777; margin-bottom: 25px; }
+
         input[type="password"] {
             width: 100%;
-            box-sizing: border-box; /* Keeps padding inside the width */
+            box-sizing: border-box;
             padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
             font-size: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
         }
+
+        input[type="password"]:focus {
+            border-color: #1a73e8;
+            outline: none;
+        }
+
         .download-btn {
             background-color: #1a73e8;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 15px;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
             width: 100%;
+            transition: background 0.3s;
         }
-        .download-btn:hover {
-            background-color: #1557b0;
-        }
+
+        .download-btn:hover { background-color: #1557b0; }
+
         .error-msg {
             color: #d93025;
             font-size: 14px;
-            margin-top: 10px;
             display: none;
+            margin-bottom: 15px;
             text-align: left;
+        }
+
+        /* --- POPUP STYLING --- */
+        .popup-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .metal-popup {
+            background: linear-gradient(145deg, #e6e7ee, #9ea1a1);
+            padding: 60px 40px;
+            border-radius: 30px;
+            border: 5px solid #ffffff;
+            box-shadow: 0 0 50px rgba(0,0,0,0.6), inset 0 0 30px rgba(255,255,255,0.4);
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        /* Rainbow Metallic Text Animation */
+        .metal-text {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin: 0;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-shift 3s linear infinite;
+            filter: drop-shadow(3px 3px 4px rgba(0,0,0,0.4));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-25px) scale(1.02); }
+        }
+
+        @keyframes rainbow-shift {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
         }
     </style>
 </head>
@@ -75,41 +128,51 @@
         <h2>jhankarnewmp3.7z</h2>
         <p>File Size: 2.6 GB</p>
         
-        <div class="input-group">
-            <input type="password" id="passwordInput" placeholder="Enter Password">
-            <div id="errorMsg" class="error-msg">Incorrect password. Please try again.</div>
-        </div>
+        <div id="errorMsg" class="error-msg">Incorrect password. Please try again.</div>
+        <input type="password" id="passwordInput" placeholder="Enter Password">
+        <button class="download-btn" onclick="processDownload()">Submit & Download</button>
+    </div>
 
-        <button class="download-btn" onclick="startDownload()">Submit & Download</button>
+    <div id="downloadPopup" class="popup-overlay">
+        <div class="metal-popup">
+            <h1 class="metal-text">File Is Downloading<br>Thanks For Download</h1>
+        </div>
     </div>
 
     <script>
-        function startDownload() {
+        function processDownload() {
             var password = document.getElementById("passwordInput").value;
             var errorMsg = document.getElementById("errorMsg");
+            var popup = document.getElementById("downloadPopup");
 
-            // HONEST WARNING: This is frontend validation. Anyone can bypass this by reading the source code.
+            // Correct Password Check
             if (password === "1233") {
                 errorMsg.style.display = "none";
                 
-                // --- Google Drive API Implementation ---
+                // Show the Animated Popup
+                popup.style.display = "flex";
+
+                // Google Drive API Configuration
                 var fileId = "1b_Tuv4_ps7FDq1hF0CX1AVtJJQaWmrS9";
                 var apiKey = "AIzaSyAPsiNIf14-uDcp5dFGaXd3oRXsvo8RsIQ";
-                
-                // alt=media tells Google to download the file directly
-                // acknowledgeAbuse=true is strictly required for files > 100MB to bypass the virus scan warning via API
                 var directDownloadUrl = "https://www.googleapis.com/drive/v3/files/" + fileId + "?alt=media&key=" + apiKey + "&acknowledgeAbuse=true";
                 
+                // Trigger Download
                 var hiddenLink = document.createElement('a');
                 hiddenLink.href = directDownloadUrl;
                 hiddenLink.target = "_blank"; 
-                
                 document.body.appendChild(hiddenLink);
                 hiddenLink.click();
                 document.body.removeChild(hiddenLink);
+
+                // Optional: Auto-close popup after 15 seconds
+                setTimeout(() => {
+                    popup.style.display = "none";
+                }, 15000);
                 
             } else {
                 errorMsg.style.display = "block";
+                document.getElementById("passwordInput").value = ""; // Clear input on error
             }
         }
     </script>
